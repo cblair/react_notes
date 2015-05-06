@@ -1,0 +1,55 @@
+<!--Component Lifecycle: Updating-->
+<!--Notes: This lesson shows us when callbacks get called for
+components/elements when they update, and how they can be used to
+minipulate/postpone rendering.
+-->
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet"
+        href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" />
+    <script type="text/javascript" src="react-0.8.0.js"></script>
+    <script type="text/javascript" src="JSXTransformer-0.8.0.js"></script>
+</head>
+
+
+<body>
+    <hr />
+    <div id="panel"></div>
+    <script type="text/jsx">
+        /*** @jsx React.DOM */
+        var APP = React.createClass({
+            getInitialState: function () {
+                return {increasing: false};
+            },
+            update: function () {
+                var newVal = this.props.val + 1;
+                this.setProps({val: newVal});
+            },
+            componentWillReceiveProps: function (nextProps) {
+                this.setState({increasing: nextProps.val > this.props.val});
+            },
+            // Override this method to only re-render the page when we want.
+            shouldComponentUpdate: function (nextProps, nextState) {
+                console.log('State increasing is: ' + this.state.increasing);
+                // Only re-render if the next value is divisible by 5.
+                return (nextProps.val % 5) === 0;
+            },
+            componentWillUpdate: function (nextProps, nextState) {
+                console.log("nextProps ===" + JSON.stringify(nextProps));
+            },
+            render: function() {
+                return <button onClick={this.update}>{this.props.val}</button>
+            }
+            componentDidUpdate: function(prevProps, prevState, rootNode) {
+                console.log("prevProps ===" + JSON.stringify(prevProps));
+            }
+        });
+
+        React.renderComponent(<APP val={0} />, document.body);
+
+    </script>
+</body>
+
+</html>

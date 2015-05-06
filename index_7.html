@@ -1,0 +1,45 @@
+<!--Accessing Child Properties-->
+<!--This lesson basically showed us how to use this.props.children.-->
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>First Component</title>
+    <link rel="stylesheet"
+        href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" />
+    <script type="text/javascript" src="http://fb.me/react-0.8.0.js"></script>
+    <script type="text/javascript" src="http://fb.me/JSXTransformer-0.8.0.js"></script>
+</head>
+
+<script type="text/jsx">
+    /*** @jsx React.DOM */
+    var APP = React.createClass({
+        render: function() {
+            return (
+                <div>
+                    <BButton>I <BHeart /> React </BButton>
+                </div>
+            )
+        }
+    });
+
+    var BButton = React.createClass({
+        render: function () {
+            return (
+                <a className="btn btn-primary">{this.props.children}</a>
+            );
+        }
+    });
+
+    var BHeart = React.createClass({
+        render: function () {
+            return <span className="glyphicon glyphicon-heart"></span>
+        }
+    });
+
+    React.renderComponent(<APP txt="this is the text"/>, document.body);
+
+</script>
+
+<body></body>
+
+</html>

@@ -1,0 +1,50 @@
+<!--transferPropsTo-->
+<!--Notes:
+This lesson demonstrates what clases get when the rendered markup is wrapped
+with transferPropsTo(), and a good way to factor code to be less redundant.
+-->
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>First Component</title>
+    <link rel="stylesheet"
+        href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" />
+    <script type="text/javascript" src="http://fb.me/react-0.8.0.js"></script>
+    <script type="text/javascript" src="http://fb.me/JSXTransformer-0.8.0.js"></script>
+</head>
+
+<script type="text/jsx">
+    /*** @jsx React.DOM */
+    var APP = React.createClass({
+        render: function() {
+            return (
+                <div>
+                    <BButton className="btn-primary"><BIcon className="glyphicon-heart" /> React </BButton>
+                    <BButton className="btn-primary"><BIcon className="glyphicon-pencil" /> React </BButton>
+                    <BButton className="btn-primary"><BIcon className="glyphicon-inbox" /> React </BButton>
+                </div>
+            )
+        }
+    });
+
+    var BButton = React.createClass({
+        render: function () {
+            return (
+                this.transferPropsTo(<a className="btn">{this.props.children}</a>)
+            );
+        }
+    });
+
+    var BIcon = React.createClass({
+        render: function () {
+            return this.transferPropsTo(<span className="glyphicon"></span>);
+        }
+    });
+
+    React.renderComponent(<APP txt="this is the text"/>, document.body);
+
+</script>
+
+<body></body>
+
+</html>

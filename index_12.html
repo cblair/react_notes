@@ -1,0 +1,70 @@
+<!--Mixins-->
+<!--Notes: This lesson shows how to use mixins, and how they 'merge' together
+with existing functions.
+-->
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet"
+        href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" />
+    <script type="text/javascript" src="react-0.8.0.js"></script>
+    <script type="text/javascript" src="JSXTransformer-0.8.0.js"></script>
+</head>
+
+
+<body>
+    <hr />
+    <div id="panel"></div>
+    <script type="text/jsx">
+        /*** @jsx React.DOM */
+        // These mixin functions will get added to all the components below.
+        // They can then be 'merged' with duplicates defined in the component
+        // as well.
+        var ReactMixin = {
+            componentWillMount: function() {
+                console.log('will mount');
+            },
+            getInitialState: function() {
+                return {count: 0};
+            },
+            incrementCount: function () {
+                this.setState({count: this.state.count + 1});
+            }
+        };
+
+        var APP = React.createClass({
+            render: function() {
+                return (
+                    <div>
+                        <buttonComponent txt="this is the button" />
+                        <br />
+                        <inputComponent txt="this is the input" />
+                    </div>
+                )
+            }
+        }),
+            buttonComponent = React.createClass({
+                mixins: [ReactMixin],
+                render: function () {
+                    return <button onClick={this.incrementCount}>{this.props.txt} - {this.state.count}</button>
+                }
+            }),
+            inputComponent = React.createClass({
+                mixins: [ReactMixin],
+                // This function doesn't override the mixin, but gets called in
+                // combination with the mixin.
+                componentWillMount: function () {
+                    setInterval(this.incrementCount, 1000);
+                },
+                render: function () {
+                    return <input value={this.props.txt + ' - ' + this.state.count} />
+                }
+            });
+
+        React.renderComponent(<APP />, document.body);
+
+    </script>
+</body>
+
+</html>
